@@ -221,9 +221,20 @@ def city_id_city_pinyin(row):
     cursor.execute("""insert into city_id_city_pinyin (city_id, city_pinyin)
                     values (%s, %s);""", (city_id, city_pinyin))
 
+@csv_decorator
+def city_id_province(row):
+    city_id = int(row['city_id'])
+    province = row['province']
+
+    cursor.execute("""insert into city_id_province (city_id, province)
+                    values (%s, %s);""", (city_id, province))
+
+print "Start"
+
 basic()
 city_id_city()
 city_id_city_pinyin()
+city_id_province()
 
 
 print "Complete"
