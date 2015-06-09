@@ -246,6 +246,14 @@ def shop_id_area(row):
     cursor.execute("""insert into shop_id_area (shop_id, area, business_area)
                     values (%s, %s, %s);""", (shop_id, area, business_area))
 
+@csv_decorator
+def small_cate_id_small_cate(row):
+    small_cate_id = row['small_cate_id']
+    small_cate = row['small_cate']
+
+    cursor.execute("""insert into small_cate_id_small_cate (small_cate_id, small_cate)
+                    values (%s, %s);""", (small_cate_id, small_cate))
+
 print "Start"
 
 basic()
@@ -254,6 +262,7 @@ city_id_city_pinyin()
 city_id_province()
 shop_id_city_id()
 shop_id_area()
+small_cate_id_small_cate()
 
 print "Complete"
 
