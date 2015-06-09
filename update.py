@@ -213,8 +213,18 @@ def basic(row):
     cursor.execute("""insert into basic ( shop_id, name, alias, address, phone, hours, avg_price, payment, is_chains)
                     values (%s, %s, %s, %s, %s, %s, %s, %s, %s);""", ( shop_id, name, alias, address, phone, hours, avg_price, payment, is_chains, ))
 
+@csv_decorator
+def city_id_city_pinyin(row):
+    city_id = int(row['city_id'])
+    city_pinyin = row['city_pinyin']
+
+    cursor.execute("""insert into city_id_city_pinyin (city_id, city_pinyin)
+                    values (%s, %s);""", (city_id, city_pinyin))
+
 basic()
 city_id_city()
+city_id_city_pinyin()
+
 
 print "Complete"
 
