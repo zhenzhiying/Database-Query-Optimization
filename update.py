@@ -29,18 +29,72 @@ csv_file_path = './data.csv'
     # # finally:
     # db.close()
 
+with open(csv_file_path, 'rb') as f:
+    reader = csv.DictReader(f)
+    data = []
+    for row in reader:
+        row['shop_id'] = int(row['shop_id'])
+        row['avg_price'] = int(row['avg_price'])
+        row['is_chains'] = int(row['is_chains'])
+        row['big_cate_id'] = int(row['big_cate_id'])
+        if row['map_type'] == '':
+            row['map_type'] = 0
+        else:
+            row['map_type'] = int(row['map_type'])
+        row['city_id'] = int(row['city_id'])
+        row['all_remarks'] = int(row['all_remarks'])
+        row['very_good_remarks'] = int(row['very_good_remarks'])
+        row['good_remarks'] = int(row['good_remarks'])
+        row['common_remarks'] = int(row['common_remarks'])
+        row['bad_remarks'] = int(row['bad_remarks'])
+        row['very_bad_remarks'] = int(row['very_bad_remarks'])
+        data.append(row)
 
 def csv_decorator(func):
     def __decorator():
-        with open(csv_file_path, 'rb') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                try:
-                    func(row)
-                except MySQLdb.IntegrityError:
-                    pass
+        for row in data:
+            try:
+                func(row)
+            except MySQLdb.IntegrityError:
+                pass
         db.commit()
     return __decorator
+
+def get_table_columns(name):
+    sql = "show columns in " + name
+    cursor.execute(sql)
+    columns = cursor.fetchall()
+    keys = []
+    for column in columns:
+        key = str(column[0])
+        keys.append(key)
+    return keys
+
+def get_table_names():
+    sql = "show tables;"
+    cursor.execute(sql)
+    columns = cursor.fetchall()
+    keys = []
+    for column in columns:
+        key = str(column[0])
+        keys.append(key)
+    return keys
+
+def insert_data_to_table(table_name):
+    columns = get_table_columns(table_name)
+
+    @csv_decorator
+    def insert(row):
+        columns_str = "(" + ", ".join(columns) + ")"
+        escape_str = "(" + ", ".join((["%s"] * len(columns))) + ");"
+        keys = []
+        for column in columns:
+            keys.append(row[column])
+        sql = "insert into " + table_name + columns_str + " values " + \
+              escape_str
+        cursor.execute(sql, tuple(keys))
+
+    insert()
 
 @csv_decorator
 def city_id_city(row):
@@ -51,15 +105,15 @@ def city_id_city(row):
 
 @csv_decorator
 def basic(row):
-    shop_id = int(row['shop_id'])
+    shop_id = row['shop_id']
     name = row['name']
     alias = row['alias']
     address = row['address']
     phone = row['phone']
     hours = row['hours']
-    avg_price = int(row['avg_price'])
+    avg_price = row['avg_price']
     payment = row['payment']
-    is_chains = int(row['is_chains'])
+    is_chains = row['is_chains']
 
     cursor.execute("""insert into basic ( shop_id, name, alias, address, phone, hours, avg_price, payment, is_chains)
                     values (%s, %s, %s, %s, %s, %s, %s, %s, %s);""", ( shop_id, name, alias, address, phone, hours, avg_price, payment, is_chains, ))
@@ -115,26 +169,9 @@ print "Start"
 # shop_id_area()
 # small_cate_id_small_cate()
 
-def get_table_columns():
-    name = "small_cate_id_small_cate"
-    sql = "show columns in " + name
-    cursor.execute(sql)
-    columns = cursor.fetchall()
-    keys = []
-    for column in columns:
-        key = str(column[0])
-        keys.append(key)
-    return keys
-
-def get_table_names():
-    sql = "show tables;"
-    cursor.execute(sql)
-    columns = cursor.fetchall()
-    keys = []
-    for column in columns:
-        key = str(column[0])
-        keys.append(key)
-    return keys
+tables = get_table_names()
+for table in tables:
+    insert_data_to_table(table)
 
 print "Complete"
 
