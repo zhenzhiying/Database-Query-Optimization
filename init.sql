@@ -96,9 +96,9 @@ create table if not exists map_info(
 shop_id int not null,
 map_type tinyint not null,
 original_latitude float,
-original_longtitude float,
+original_longitude float,
 google_latitude float,
-google_longtitude float,
+google_longitude float,
 traffic char(10),
 primary key(shop_id),
 foreign key(shop_id) references basic(shop_id)
@@ -134,12 +134,10 @@ foreign key(shop_id) references basic(shop_id)
 
 create table if not exists discount(
 shop_id int not null,
-group_info text,
+group text,
 card_info char(50),
 primary key(shop_id),
 foreign key(shop_id) references basic(shop_id)
 );
 
 show tables;
-
-select * from city_id_city;
