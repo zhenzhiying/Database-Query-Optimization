@@ -107,13 +107,34 @@ def small_cate_id_small_cate(row):
 
 print "Start"
 
-basic()
-city_id_city()
-city_id_city_pinyin()
-city_id_province()
-shop_id_city_id()
-shop_id_area()
-small_cate_id_small_cate()
+# basic()
+# city_id_city()
+# city_id_city_pinyin()
+# city_id_province()
+# shop_id_city_id()
+# shop_id_area()
+# small_cate_id_small_cate()
+
+def get_table_columns():
+    name = "small_cate_id_small_cate"
+    sql = "show columns in " + name
+    cursor.execute(sql)
+    columns = cursor.fetchall()
+    keys = []
+    for column in columns:
+        key = str(column[0])
+        keys.append(key)
+    return keys
+
+def get_table_names():
+    sql = "show tables;"
+    cursor.execute(sql)
+    columns = cursor.fetchall()
+    keys = []
+    for column in columns:
+        key = str(column[0])
+        keys.append(key)
+    return keys
 
 print "Complete"
 
