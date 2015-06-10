@@ -103,10 +103,10 @@ def reset():
     create table if not exists map_info(
     shop_id int not null,
     map_type tinyint not null,
-    original_latitude float,
-    original_longitude float,
-    google_latitude float,
-    google_longitude float,
+    original_latitude float(7, 5),
+    original_longitude float(8, 5),
+    google_latitude float(7, 5),
+    google_longitude float(8, 5),
     traffic char(10),
     primary key(shop_id),
     foreign key(shop_id) references basic(shop_id)
@@ -117,7 +117,7 @@ def reset():
     navigation char(150) not null,
     recommended_dishes text,
     photos char(100) not null,
-    description char(55),
+    description char(550),
     tags char(200),
     atmosphere char(10),
     nearby_shops char(10),
