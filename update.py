@@ -76,12 +76,13 @@ def insert_data_to_table(table_name):
 
     insert()
 
-print "Start"
+print "Start insertation"
 
 tables = get_table_names()
+
 for table in tables:
     insert_data_to_table(table)
 
-print "Complete"
+print "Complete insertation"
 
 db.close()
