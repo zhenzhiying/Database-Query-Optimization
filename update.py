@@ -3,7 +3,7 @@
 import MySQLdb
 import csv
 
-db = MySQLdb.connect(passwd="123123", db="test", host="10.131.237.11", user="root", charset='utf8')
+db = MySQLdb.connect(passwd="sd", db="test", host="localhost", user="root", charset='utf8')
 
 cursor = db.cursor()
 
