@@ -95,10 +95,10 @@ foreign key(big_cate_id) references big_cate_id_big_cate(big_cate_id)
 create table if not exists map_info(
 shop_id int not null,
 map_type tinyint not null,
-original_latitude float,
-original_longitude float,
-google_latitude float,
-google_longitude float,
+original_latitude float(7, 5),
+original_longitude float(8, 5),
+google_latitude float(7, 5),
+google_longitude float(8, 5),
 traffic char(10),
 primary key(shop_id),
 foreign key(shop_id) references basic(shop_id)
@@ -109,7 +109,7 @@ shop_id int not null,
 navigation char(150) not null,
 recommended_dishes text,
 photos char(100) not null,
-description char(550),
+description text,
 tags char(200),
 atmosphere char(10),
 nearby_shops char(10),
@@ -119,9 +119,9 @@ foreign key(shop_id) references basic(shop_id)
 
 create table if not exists remark(
 shop_id int not null,
-product_rating float,
-environment_rating float,
-service_rating float,
+product_rating float(2, 1),
+environment_rating float(2, 1),
+service_rating float(2, 1),
 all_remarks int not null,
 very_good_remarks int not null,
 good_remarks int not null,
@@ -134,7 +134,7 @@ foreign key(shop_id) references basic(shop_id)
 
 create table if not exists discount(
 shop_id int not null,
-group text,
+group_info text,
 card_info char(50),
 primary key(shop_id),
 foreign key(shop_id) references basic(shop_id)
